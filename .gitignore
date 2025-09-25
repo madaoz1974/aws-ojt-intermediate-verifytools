@@ -1,0 +1,13 @@
+# AWS設定ファイル
+aws-config.sh
+
+# ログファイル
+verification_*.log
+
+# 一時ファイル
+*.tmp
+.DS_Store
+
+# IDEファイル
+.vscode/settings.json
+.idea/
