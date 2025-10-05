@@ -3,7 +3,7 @@
 # AWS Resource Verification Script
 # 成果物確認ポイントに基づくAWSリソースの検証
 
-set -e
+# Note: エラーが発生しても検証を継続するため set -e を使用しない
 
 # カラー出力設定
 RED='\033[0;31m'
@@ -13,7 +13,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # ログファイル
-LOG_FILE="/workspace/verification_$(date +%Y%m%d_%H%M%S).log"
+LOG_FILE="/workspaces/aws-ojt-intermediate-verifytools/verification_$(date +%Y%m%d_%H%M%S).log"
 
 # ヘルパー関数
 log() {
@@ -37,8 +37,8 @@ check_success() {
 }
 
 # 設定ファイルの読み込み
-if [ -f "/workspace/config/aws-config.sh" ]; then
-    source /workspace/config/aws-config.sh
+if [ -f "/workspaces/aws-ojt-intermediate-verifytools/config/aws-config.sh" ]; then
+    source /workspaces/aws-ojt-intermediate-verifytools/config/aws-config.sh
 else
     log "${YELLOW}警告: 設定ファイルが見つかりません。デフォルト値を使用します。${NC}"
 fi
