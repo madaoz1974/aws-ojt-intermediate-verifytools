@@ -12,8 +12,10 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# ログファイル
-LOG_FILE="/workspaces/aws-ojt-intermediate-verifytools/verification_$(date +%Y%m%d_%H%M%S).log"
+# ログディレクトリとファイル
+LOG_DIR="/workspaces/aws-ojt-intermediate-verifytools/log"
+mkdir -p "$LOG_DIR"
+LOG_FILE="$LOG_DIR/verification_$(date +%Y%m%d_%H%M%S).log"
 
 # ヘルパー関数
 log() {
@@ -61,19 +63,20 @@ verify_cloudfront() {
         return 1
     fi
     
-    # /contents/ パスルーティング確認
+    # 基本情報確認
     local default_root_object=$(echo "$distribution_info" | jq -r '.Distribution.DistributionConfig.DefaultRootObject')
     local origins=$(echo "$distribution_info" | jq -r '.Distribution.DistributionConfig.Origins.Items[].DomainName')
     
     log "Default Root Object: $default_root_object"
     log "Origins: $origins"
     
-    # Cache Behaviors確認
+    # Cache Behaviors確認（現在はApp用構成のため、LP用は将来対応）
     local behaviors=$(echo "$distribution_info" | jq -r '.Distribution.DistributionConfig.CacheBehaviors.Items[]?.PathPattern // empty')
     if echo "$behaviors" | grep -q "/contents/*"; then
-        log "${GREEN}✓ /contents/ パスルーティングが設定されています${NC}"
+        log "${GREEN}✓ /contents/ パスルーティングが設定されています（LP用S3対応済み）${NC}"
     else
-        log "${YELLOW}⚠ /contents/ パスルーティングが明示的に設定されていない可能性があります${NC}"
+        log "${BLUE}i /contents/ パスルーティング未設定（現在はApp用構成のため正常）${NC}"
+        log "${BLUE}  ※ LP用S3作成時に /contents/* → LP用S3 のルーティングを追加予定${NC}"
     fi
     
     # Distribution状態確認
@@ -298,6 +301,7 @@ verify_s3() {
     fi
     
     log "S3 Bucket: $S3_BUCKET_NAME"
+    log "${BLUE}  用途: EC2動画保存用S3（App環境用）${NC}"
     
     # バケット存在確認
     if ! aws s3api head-bucket --bucket "$S3_BUCKET_NAME" 2>/dev/null; then
@@ -322,15 +326,17 @@ verify_s3() {
         
         # CloudFrontおよびEC2 Roleのアクセス許可確認
         if echo "$bucket_policy" | grep -q "cloudfront\|OAC\|OriginAccessControl"; then
-            check_success "CloudFront (OAC) のアクセスが設定されています"
+            log "${BLUE}i CloudFront (OAC) のアクセスが設定されています${NC}"
+            log "${BLUE}  ※ 現在はApp用構成のため、LP用S3作成時にCloudFront設定を追加予定${NC}"
         else
-            log "${YELLOW}⚠ CloudFront (OAC) のアクセス設定が明確ではありません${NC}"
+            log "${BLUE}i CloudFront (OAC) のアクセス未設定（現在のApp用構成では不要）${NC}"
         fi
         
         if echo "$bucket_policy" | grep -q "arn:aws:iam::.*:role"; then
-            check_success "IAM Role のアクセスが設定されています"
+            check_success "EC2 Role のアクセスが設定されています（動画保存用）"
         else
-            log "${YELLOW}⚠ IAM Role のアクセス設定が明確ではありません${NC}"
+            log "${YELLOW}⚠ EC2 Role のアクセス設定が明確ではありません${NC}"
+            log "${YELLOW}  ※ EC2からの動画ファイル保存のため、Role設定を確認してください${NC}"
         fi
     else
         log "${YELLOW}⚠ バケットポリシーが設定されていません${NC}"

@@ -2,7 +2,8 @@
 aws-config.sh
 
 # ログファイル
-verification_*.log
+/log/
+/log/*.log
 
 # 一時ファイル
 *.tmp
@@ -11,3 +12,7 @@ verification_*.log
 # IDEファイル
 .vscode/settings.json
 .idea/
+
+# .docディレクトリとその配下の*.mdファイル
+/.doc/
+/.doc/*.md
