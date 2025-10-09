@@ -1,5 +1,5 @@
 # AWS設定ファイル
-aws-config.sh
+aws-config*.sh
 
 # ログファイル
 /log/
@@ -16,3 +16,7 @@ aws-config.sh
 # .docディレクトリとその配下の*.mdファイル
 /.doc/
 /.doc/*.md
+
+# 回答ディレクトリ
+/.answer/
+/.answer/*.md

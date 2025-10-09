@@ -89,7 +89,7 @@ S3_BUCKET_NAME="my-tomcat-app-bucket"
 検証結果は以下の場所に出力されます：
 
 - **コンソール出力**: リアルタイムで結果を表示
-- **ログファイル**: `/workspace/verification_YYYYMMDD_HHMMSS.log`
+- **ログファイル**: `/workspace/log/verification_YYYYMMDD_HHMMSS.log`
 
 #### 結果の例：
 
@@ -236,6 +236,10 @@ psql -h YOUR_RDS_ENDPOINT -U postgres -d movie -p 5432
 ├── .devcontainer/
 │   ├── devcontainer.json    # Dev Container設定
 │   └── Dockerfile          # コンテナイメージ定義
+├── .doc/
+|   └── *.md                # 要件や仕様があればMarkdown形式で保存
+├── .answer/
+|   └── *.md                # 模範回答があればMarkdown形式で保存
 ├── config/
 │   └── aws-config.template.sh  # 設定ファイルテンプレート
 ├── scripts/
