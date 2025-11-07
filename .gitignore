@@ -20,3 +20,8 @@ aws-config*.sh
 # 回答ディレクトリ
 /.answer/
 /.answer/*.md
+
+# 成果物ディレクトリ
+/output/
+/output/*
+

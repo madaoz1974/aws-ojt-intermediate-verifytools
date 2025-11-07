@@ -37,8 +37,26 @@ RDS_DATABASE="movie"
 # ===========================================
 # S3 設定
 # ===========================================
-# S3 バケット名
+# APP用S3 バケット名（動画保存用）
 S3_BUCKET_NAME=""
+
+# LP用S3 バケット名（静的ホスティング用）
+LP_S3_BUCKET_NAME=""
+
+# ===========================================
+# LP（ランディングページ）用CloudFront設定
+# ===========================================
+# LP用CloudFront Distribution ID
+LP_CLOUDFRONT_DISTRIBUTION_ID=""
+
+# ===========================================
+# CI/CD設定
+# ===========================================
+# CodePipeline名
+CODEPIPELINE_NAME=""
+
+# CodeBuild Project名
+CODEBUILD_PROJECT_NAME=""
 
 # ===========================================
 # その他の設定
@@ -56,6 +74,10 @@ AWS_DEFAULT_REGION="ap-northeast-1"
 # RDS_INSTANCE_ID="rds-tomcat"
 # RDS_PASSWORD="your-password-here"
 # S3_BUCKET_NAME="my-tomcat-app-bucket"
+# LP_S3_BUCKET_NAME="my-lp-bucket"
+# LP_CLOUDFRONT_DISTRIBUTION_ID="E0987654321098"
+# CODEPIPELINE_NAME="my-app-pipeline"
+# CODEBUILD_PROJECT_NAME="my-app-build"
 
 # ===========================================
 # セキュリティに関する注意事項
